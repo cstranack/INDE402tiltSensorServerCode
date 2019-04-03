@@ -12,6 +12,7 @@ var port = process.env.PORT || 3000;
 
 app.use(BodyParser.json());
 app.use(BodyParser.urlencoded({ extended: true }));
+app.use(Express.static('www'));
 
 MongoClient.connect(url, { useNewUrlParser: true }, (error, client) => {
     if (error) throw error;
@@ -20,9 +21,13 @@ MongoClient.connect(url, { useNewUrlParser: true }, (error, client) => {
     console.log(`Connected to ${dbName}`);
 })
 
-app.get("/", (req, res) => {
-    res.send('None shall pass');
-});
+//app.get("/", (req, res) => {
+    //res.send('None shall pass');
+//});
+
+app.get("/" ,(req,res) => {
+    res.sendFile( __dirname + "/www/")
+  });
 
 app.post("/addData", (req, res) => {
     res.status(200);
