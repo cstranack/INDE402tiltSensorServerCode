@@ -4,11 +4,11 @@ let sensorState = [];
 let sensorTime = [];
 let count = 0;
 let waterInTake = 0;
-let value;
+let onTable = 0;
 
 
-const url = '/getData';
-fetch (url)
+const url = "/getData";
+fetch(url)
     .then(res => res.json())
     .then((data) => {
         var sensorData = data;
@@ -21,23 +21,26 @@ fetch (url)
         });
 
         console.log("state array length: " + sensorState.length);
-
+        //extracting the 2 values in sensorState
         while (count < sensorState.length){
             count ++;
             if (sensorState[count-1] == "Drinking"){
                 waterInTake ++;
                 value = waterInTake;
             }
+            else{
+               onTable ++;
+            }
         }
     
-
+        
             console.log(sensorState);
             console.log(sensorTime);
             console.log("Water: " + value);
             console.log("length: " + sensorState.length);
 
 
-
+        //creating the chart
     var ctx = document.getElementById('myChart').getContext('2d');
     var myDoughnutChart = new Chart(ctx, {
         type: 'doughnut',
@@ -45,10 +48,11 @@ fetch (url)
             labels: ['On Table', 'Drinking'],
             datasets: [{
                 label:  '# of votes',
-                data: [120, waterInTake],
+                //putting data from database into the graph
+                data: [onTable, waterInTake],
 
             
-
+                    //colours of the graph
                     backgroundColor: [
                         'rgba(255, 99, 132, 0.2)',
                         'rgba(54, 162, 235, 0.2)'
@@ -72,21 +76,8 @@ fetch (url)
             }
         });
 
-    /*
-
-        console.log(waterInTake);
-
-        const waterData = document.querySelector('.waterData');
-        let dataFeed = data.map((WaterInTake) => {
-            return `<p>I had many sips in 1 hour${waterInTake}</p>`
-        }).join('');
-        waterData.innerHTML = dataFeed;*/
-        });
+  //close the fetch url here so data can be put into a graph  
+});
 
 
-            //.catch(err => { throw err });
-
-
-        //closing data collection t the end of the program
-    
-//});
+            
